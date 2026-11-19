@@ -6,6 +6,7 @@
 // Luxury Fashion Brand
 // Formula Racing
 using financemanager_proekti_gio.Football_Finance;
+using static financemanager_proekti_gio.FinanceManager;
 
 namespace financemanager_proekti_gio
 {
@@ -75,7 +76,8 @@ namespace financemanager_proekti_gio
                             Console.WriteLine();
                             Console.WriteLine("Available Methods:");
                             Console.WriteLine("1. Check Team Budget");
-                            Console.WriteLine("2. Exit");
+                            Console.WriteLine("2. Calculate Leauge Profit");
+                            Console.WriteLine("3. Exit");
 
                             Console.WriteLine("Choose A Method:");
 
@@ -91,6 +93,10 @@ namespace financemanager_proekti_gio
                                     break;
 
                                 case 2:
+                                    selectedLeague.CalculateLeaugeProfit();
+                                    break;
+
+                                case 3:
                                     running = false;
                                     Console.WriteLine("Goodbye!");
                                     break;
@@ -106,10 +112,46 @@ namespace financemanager_proekti_gio
                         Console.WriteLine("Invalid League Choice!");
                     }
 
+
                     break;
 
                 case 1:
                     Console.WriteLine("Congratulations! You Are Now The Finance Manager Of An Airline Company!");
+
+                    FinanceManagerOfAnAirlineCompany finance = new();
+
+                    finance.AddRevenue(new Revenue
+                    {
+                        Id = 1,
+                        FlightId = 101,
+                        Amount = 500,
+                        Date = DateTime.Now
+                    });
+
+                    finance.AddExpense(new Expense
+                    {
+                        Id = 1,
+                        Type = "Fuel",
+                        Description = "Flight fuel",
+                        Amount = 150,
+                        Date = DateTime.Now
+                    });
+
+                    finance.AddRefund(new Refund
+                    {
+                        Id = 1,
+                        BookingId = 20,
+                        Amount = 50,
+                        Date = DateTime.Now
+                    });
+
+                    FinancialReport report = finance.GenerateReport();
+
+                    Console.WriteLine($"Revenue: ${report.TotalRevenue}");
+                    Console.WriteLine($"Expenses: ${report.TotalExpenses}");
+                    Console.WriteLine($"Refunds: ${report.TotalRefunds}");
+                    Console.WriteLine($"Net Profit: ${report.NetProfit}");
+
                     break;
 
                 case 2:

@@ -34,5 +34,21 @@ namespace financemanager_proekti_gio
         {
             Console.WriteLine("Team search is not available.");
         }
+        public decimal Broadcasting;
+        public decimal Sponsorships;
+        public decimal RegistrationFees;
+        public decimal RefereePayments;
+        public decimal StadiumCosts;
+        public decimal PrizeMoney;
+        public decimal Prize;
+        public decimal TvMoney;
+        public void CalculateLeaugeProfit()
+        {
+            decimal totalIncome = Broadcasting + Sponsorships + RegistrationFees;
+            decimal totalExpenses = RefereePayments + StadiumCosts + Prize + TvMoney;
+
+            decimal profit = totalIncome - totalExpenses;
+            Console.WriteLine($"League Profit: ${profit}");
+        }
     }
 }
