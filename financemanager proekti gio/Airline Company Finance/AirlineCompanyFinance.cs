@@ -1,8 +1,9 @@
-﻿namespace financemanager_proekti_gio
-{
-    internal class FinanceManager
-    {
+﻿ using System.Text.Json;
 
+namespace financemanager_proekti_gio.Airline_Company_Finance
+{
+    internal class AirlineCompanyFinance
+    {
         public class RevenueOfAnAirlineCompany
         {
             public int Id { get; set; }
@@ -68,6 +69,46 @@
                     TotalExpenses = expenses.Sum(e => e.Amount),
                     TotalRefunds = refunds.Sum(r => r.Amount)
                 };
+            }
+
+            public void ShowMostProfitableFlight()
+            {
+                if (!revenues.Any())
+                {
+                    Console.WriteLine("No Flight Revenues Found!");
+                    return;
+                }
+
+                var flight = revenues
+                    .GroupBy(r => r.FlightId)
+                    .Select(g => new
+                    {
+                        FlightId = g.Key,
+                        TotalRevenue = g.Sum(r => r.Amount)
+                    })
+                    .OrderByDescending(f => f.TotalRevenue)
+                    .First();
+
+                Console.WriteLine($"Most Profitable Flight ID: {flight.FlightId}");
+                Console.WriteLine($"Total Revenue: {flight.TotalRevenue:C}");
+            }
+
+            public void SerializeReport()
+            {
+                FinancialReportOfAnAirlineCompany report = GenerateReport();
+
+                string json = JsonSerializer.Serialize(report, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                });
+
+                File.WriteAllText("C:\\Users\\user\\OneDrive\\Desktop\\dg\\FinancialReport.json", json);
+            }
+            public FinancialReportOfAnAirlineCompany DeserializeReport()
+            {
+                string json = File.ReadAllText("FinancialReport.json");
+
+                return JsonSerializer.Deserialize<FinancialReportOfAnAirlineCompany>(json)!;
             }
         }
     }

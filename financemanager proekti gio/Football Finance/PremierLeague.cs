@@ -37,6 +37,13 @@ namespace financemanager_proekti_gio
         {
             PremierLeagueBudget = random.Next(700, 1001) * 1000000;
             // am minimums da maximums vaketeb ligis donis mixedvit
+            Broadcasting = PremierLeagueBudget * 0.40m;
+            Sponsorships = PremierLeagueBudget * 0.25m;
+            RegistrationFees = PremierLeagueBudget * 0.10m;
+
+            RefereePayments = PremierLeagueBudget * 0.10m;
+            StadiumCosts = PremierLeagueBudget * 0.10m;
+            Prize = PremierLeagueBudget * 0.05m;
 
             foreach (Team team in PremierLeagueTeams)
             {
@@ -69,5 +76,6 @@ namespace financemanager_proekti_gio
                 Console.WriteLine("Team not found!");
             }
         }
+
     }
 }

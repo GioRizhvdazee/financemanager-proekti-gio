@@ -36,7 +36,13 @@ namespace financemanager_proekti_gio
         public Ligue1() : base("Ligue 1", 40)
         {
             Ligue1Budget = random.Next(600, 901) * 1000000;
+            Broadcasting = Ligue1Budget * 0.40m;
+            Sponsorships = Ligue1Budget * 0.25m;
+            RegistrationFees = Ligue1Budget * 0.10m;
 
+            RefereePayments = Ligue1Budget * 0.10m;
+            StadiumCosts = Ligue1Budget * 0.10m;
+            Prize = Ligue1Budget * 0.05m;
             foreach (Team team in Ligue1Teams)
             {
                 int minBudget = team.Level * 5000000;
@@ -47,6 +53,7 @@ namespace financemanager_proekti_gio
         }
 
         public override void ShowTeamBudget(string teamName)
+            // am fexburtis klasebsi aris es overridebi, mat garese mewera da amomigdo yvelaze override da taab-s davawire, axla yvelgan esea ukve
         {
             Team? team = null;
 

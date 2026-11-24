@@ -37,7 +37,13 @@ namespace financemanager_proekti_gio
         {
             LaLigaBudget = random.Next(700, 1001) * 1000000;
             // igivea chemtvis premier leauge da la liga donis mixedvit
+            Broadcasting = LaLigaBudget * 0.40m;
+            Sponsorships = LaLigaBudget * 0.25m;
+            RegistrationFees = LaLigaBudget * 0.10m;
 
+            RefereePayments = LaLigaBudget * 0.10m;
+            StadiumCosts = LaLigaBudget * 0.10m;
+            Prize = LaLigaBudget * 0.05m;
             foreach (Team team in LaLigaTeams)
             {
                 int minBudget = team.Level * 5000000;

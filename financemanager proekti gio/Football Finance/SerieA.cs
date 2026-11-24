@@ -36,6 +36,14 @@ namespace financemanager_proekti_gio
         public SerieA() : base("Serie A", 30)
         {
             SerieABudget = random.Next(600, 901) * 1000000;
+            Broadcasting = SerieABudget * 0.40m;
+            Sponsorships = SerieABudget * 0.25m;
+            RegistrationFees = SerieABudget * 0.10m;
+
+            RefereePayments = SerieABudget * 0.10m;
+            StadiumCosts = SerieABudget * 0.10m;
+            Prize = SerieABudget * 0.05m;
+            // quickfixma ar gacherda am m-asos damatebit da ro davserche decimalad agnisnavs
 
             foreach (Team team in SerieATeams)
             {

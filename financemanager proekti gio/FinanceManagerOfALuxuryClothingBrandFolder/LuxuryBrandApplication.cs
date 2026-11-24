@@ -18,6 +18,7 @@
 
         public FinanceManagerOfALuxuryClothingBrand ApplyToBrand()
         {
+            // gadavakete metki mirchevnia bool sityva = true, while(sityva){...} magram erori iyo da davabrune pirdapir true
             while (true)
             {
                 Console.WriteLine("Available Luxury Brands:");

@@ -35,6 +35,13 @@ namespace financemanager_proekti_gio
         public Bundesliga() : base("Bundesliga", 25)
         {
             BundesligaBudget = random.Next(700, 1001) * 1000000;
+            Broadcasting = BundesligaBudget * 0.40m;
+            Sponsorships = BundesligaBudget * 0.25m;
+            RegistrationFees = BundesligaBudget * 0.10m;
+
+            RefereePayments = BundesligaBudget * 0.10m;
+            StadiumCosts = BundesligaBudget * 0.10m;
+            Prize = BundesligaBudget * 0.05m;
 
             foreach (Team team in BundesligaTeams)
             {

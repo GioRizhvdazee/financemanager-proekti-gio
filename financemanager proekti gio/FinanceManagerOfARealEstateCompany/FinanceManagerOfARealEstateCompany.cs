@@ -1,4 +1,5 @@
 ﻿using financemanager_proekti_gio.FinanceManagerOfARealEstateCompany;
+using System.Text.Json;
 internal class FinanceManagerOfARealEstateCompany
 {
     List<Property> Properties = new()
@@ -16,6 +17,18 @@ internal class FinanceManagerOfARealEstateCompany
         };
 
     decimal TotalRevenue = 0;
+
+    // ak davamateb, radgnan shechveuli ar var amas bolosi
+    public class FinancialReportOfARealEstateCompany
+    {
+        public int TotalProperties { get; set; }
+        public int AvailableProperties { get; set; }
+        public decimal TotalPurchaseValue { get; set; }
+        public decimal TotalSellingValue { get; set; }
+        public decimal TotalExpenses { get; set; }
+        public decimal PotentialPropertyProfitt { get; set; }
+        public decimal RecordedRevenue { get; set; }
+    }
 
     public void AddProperty()
     {
@@ -213,7 +226,7 @@ internal class FinanceManagerOfARealEstateCompany
         }
     }
 
-    public void GenerateFinancialReport()
+    public FinancialReportOfARealEstateCompany GenerateReport()
     {
         decimal totalPurchaseValue = 0;
         decimal totalSellingValue = 0;
@@ -231,14 +244,32 @@ internal class FinanceManagerOfARealEstateCompany
                          - property.Expenses;
         }
 
-        Console.WriteLine("Financial Report:");
-        Console.WriteLine();
-        Console.WriteLine($"Total Properties: {Properties.Count}");
-        Console.WriteLine($"Available Properties: {Properties.FindAll(p => p.IsAvailable).Count}");
-        Console.WriteLine($"Total Purchase Value: {totalPurchaseValue}");
-        Console.WriteLine($"Total Selling Value: {totalSellingValue}");
-        Console.WriteLine($"Total Expenses: {totalExpenses}");
-        Console.WriteLine($"Potential Property Profit: {totalProfit}");
-        Console.WriteLine($"Recorded Revenue: {TotalRevenue}");
+        return new FinancialReportOfARealEstateCompany
+        {
+            TotalProperties = Properties.Count,
+            AvailableProperties = Properties.Count(p => p.IsAvailable),
+            TotalPurchaseValue = totalPurchaseValue,
+            TotalSellingValue = totalSellingValue,
+            TotalExpenses = totalExpenses,
+            PotentialPropertyProfitt = totalProfit,
+            RecordedRevenue = TotalRevenue
+        };
+    }
+    public void SerializeReport()
+    {
+        FinancialReportOfARealEstateCompany report = GenerateReport();
+
+        string json = JsonSerializer.Serialize(report, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
+
+        File.WriteAllText("C:\\Users\\user\\OneDrive\\Desktop\\dg\\FinancialReport.json", json);
+    }
+    public FinancialReportOfARealEstateCompany DeserializeReport()
+    {
+        string json = File.ReadAllText("FinancialReport.json");
+
+        return JsonSerializer.Deserialize<FinancialReportOfARealEstateCompany>(json)!;
     }
 }

@@ -1,4 +1,5 @@
-﻿
+﻿using System.Text.Json;
+
 namespace financemanager_proekti_gio.FinanceManagerOfALuxuryClothingBrandFolder
 {
     internal class LuxuryBrandProduct
@@ -78,12 +79,32 @@ namespace financemanager_proekti_gio.FinanceManagerOfALuxuryClothingBrandFolder
 
         public Dictionary<string, decimal> BrandExpenses = new();
 
+        public class FinancialReportOfALuxuryBrand
+        {
+            public decimal TotalRevenue { get; set; }
+            public decimal TotalExpenses { get; set; }
+            public decimal TotalProfit { get; set; }
+            public int TotalProducts { get; set; }
+        }
+
         public LuxuryBrandProduct()
         {
             foreach (string brand in Brands.Keys)
             {
                 BrandExpenses[brand] = 0;
             }
+
+        }
+        public FinancialReportOfALuxuryBrand GenerateReport()
+        {
+            return new FinancialReportOfALuxuryBrand
+            {
+                TotalRevenue = Brands.Keys.Sum(CalculateRevenue),
+                TotalExpenses = BrandExpenses.Values.Sum(),
+                TotalProfit = Brands.Keys.Sum(CalculateProfit),
+                TotalProducts = Brands.Values.Sum(products => products.Sum(p => p.Stock))
+                // me rac mewera is producktis saxeobas itvlida da ara stockshi ramdenia
+            };
         }
 
         public void AddProduct(string brand, string name, decimal price, int stock)
@@ -116,6 +137,7 @@ namespace financemanager_proekti_gio.FinanceManagerOfALuxuryClothingBrandFolder
             LuxuryProduct product = Brands[brand].FirstOrDefault(
                 p => p.Name.Equals(productName, StringComparison.OrdinalIgnoreCase));
             // mas if(profuct-s erori konda da quick fixma gamiswora
+            // au kidev ver vxvdebi es ragaa
 
             if (product == null)
             {
@@ -208,11 +230,41 @@ namespace financemanager_proekti_gio.FinanceManagerOfALuxuryClothingBrandFolder
                 Console.WriteLine($"Profit: {CalculateProfit(brand):C}");
                 Console.WriteLine($"Total Stock: {Brands[brand].Sum(p => p.Stock)}");
             }
+            FinancialReportOfALuxuryBrand report = GenerateReport();
 
+            Console.WriteLine();
+            Console.WriteLine("Overall Financial Report");
+            Console.WriteLine($"Total Revenue: {report.TotalRevenue}");
+            Console.WriteLine($"Total Expenses: {report.TotalExpenses}");
+            Console.WriteLine($"Total Profit: {report.TotalProfit}");
+            Console.WriteLine($"Total Products In Stock: {report.TotalProducts}");
+
+        }
+        public void SerializeReport()
+        {
+            FinancialReportOfALuxuryBrand report = GenerateReport();
+
+            string json = JsonSerializer.Serialize(report, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
+            File.WriteAllText("C:\\Users\\user\\OneDrive\\Desktop\\dg\\FinancialReport.json", json);
+        }
+        public FinancialReportOfALuxuryBrand DeserializeReport()
+        {
+            string json = File.ReadAllText("FinancialReport.json");
+
+            return JsonSerializer.Deserialize<FinancialReportOfALuxuryBrand>(json)!;
         }
 
         public void ShowMostProfitableBrand()
         {
+            if (!Brands.Any())
+            {
+                Console.WriteLine("No Brands Found!");
+                return;
+            }
             string brand = Brands.Keys
                 .OrderByDescending(CalculateProfit)
                 //klebadoba xshirad ar madgeba mara gamomadga
@@ -221,5 +273,6 @@ namespace financemanager_proekti_gio.FinanceManagerOfALuxuryClothingBrandFolder
             Console.WriteLine($"Most Profitable Brand: {brand}");
             Console.WriteLine($"Profit: {CalculateProfit(brand)}");
         }
+
     }
 }

@@ -31,6 +31,13 @@ namespace financemanager_proekti_gio.Football_Finance
         public Eredivisie() : base("Eredivisie", 55)
         {
             EredivisieBudget = random.Next(250, 451) * 1000000;
+            Broadcasting = EredivisieBudget * 0.40m;
+            Sponsorships = EredivisieBudget * 0.25m;
+            RegistrationFees = EredivisieBudget * 0.10m;
+
+            RefereePayments = EredivisieBudget * 0.10m;
+            StadiumCosts = EredivisieBudget * 0.10m;
+            Prize = EredivisieBudget * 0.05m;
 
             foreach (Team team in EredivisieTeams)
             {

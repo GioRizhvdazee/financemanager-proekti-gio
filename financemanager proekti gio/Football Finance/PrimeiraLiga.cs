@@ -34,6 +34,13 @@ namespace financemanager_proekti_gio.Football_Finance
         public PrimeiraLiga() : base("Primeira Liga", 70)
         {
             PrimeiraLigaBudget = random.Next(200, 351) * 1000000;
+            Broadcasting = PrimeiraLigaBudget * 0.40m;
+            Sponsorships = PrimeiraLigaBudget * 0.25m;
+            RegistrationFees = PrimeiraLigaBudget * 0.10m;
+
+            RefereePayments = PrimeiraLigaBudget * 0.10m;
+            StadiumCosts = PrimeiraLigaBudget * 0.10m;
+            Prize = PrimeiraLigaBudget * 0.05m;
 
             foreach (Team team in PrimeiraLigaTeams)
             {

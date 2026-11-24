@@ -1,4 +1,6 @@
-﻿namespace financemanager_proekti_gio.FinanceManagerOfAFilmStudio
+﻿using System.Text.Json;
+
+namespace financemanager_proekti_gio.FinanceManagerOfAFilmStudio
 {
     internal class FinanceManagerOfAFilmStudio
     {
@@ -73,9 +75,17 @@
             else
             {
                 Console.WriteLine("Enter Movie ID to add revenue:");
-                int movieId = Convert.ToInt32(Console.ReadLine());
+                //int movie_id_response = Convert.ToInt32(Console.ReadLine());
+                string Movie_Id_Response = Console.ReadLine();
+                //bool succsess = int.TryParse(Movie_Id_Response, out int movie_id_response); es dzaan areulia
+                if (!int.TryParse(Movie_Id_Response, out int movie_id_response))
+                {
+                    Console.WriteLine("Invalid Movie ID!");
+                    return;
+                }
+                //es jobia, prosta es ufro rtuli iyo
 
-                Movie selectedMovie = Movies.Find(m => m.Id == movieId);
+                Movie selectedMovie = Movies.Find(m => m.Id == movie_id_response);
 
                 if (selectedMovie != null)
                 {
@@ -105,10 +115,16 @@
             else
             {
                 Console.WriteLine("Enter Movie ID to add expense:");
-                int movieId = Convert.ToInt32(Console.ReadLine());
+                string Movie_Id_Response = Console.ReadLine();
 
-                Movie selectedMovie = Movies.Find(m => m.Id == movieId);
+                if (!int.TryParse(Movie_Id_Response, out int movie_id_response))
+                {
+                    Console.WriteLine("Invalid Movie ID!");
+                    return;
+                }
+                // esec jobia imas, ufro gasagebi, praktikuli da konkretulia
 
+                Movie selectedMovie = Movies.Find(m => m.Id == movie_id_response);
                 if (selectedMovie != null)
                 {
                     Console.WriteLine($"Current Budget for '{selectedMovie.Title}': {selectedMovie.Budget}");
@@ -137,11 +153,11 @@
             else
             {
                 Console.WriteLine("Enter Movie ID to show profit:");
-                int movieId = Convert.ToInt32(Console.ReadLine());
+                int movie_id_response = Convert.ToInt32(Console.ReadLine());
                 // es converti galeriasi vnaxe telefonis
 
-                Movie selectedMovie = Movies.Find(m => m.Id == movieId);
-                // mas es potential fix-ma damiwera amis zemota xazi yvela metodsi, me frcxilebsi movieId mewera
+                Movie selectedMovie = Movies.Find(m => m.Id == movie_id_response);
+                // mas es potential fix-ma damiwera amis zemota xazi yvela metodsi, me frcxilebsi movie_id_response mewera
 
                 if (selectedMovie != null)
                 {
@@ -176,6 +192,42 @@
                     Console.WriteLine("No profitable movies found.");
                 }
             }
+        }
+        public class FinancialReportOfAFilmStudio
+        {
+            public int TotalMovies { get; set; }
+            public decimal TotalRevenue { get; set; }
+            public decimal TotalExpenses { get; set; }
+
+            public decimal NetProfit =>
+                TotalRevenue - TotalExpenses;
+        }
+
+        public FinancialReportOfAFilmStudio GenerateReport()
+        {
+            return new FinancialReportOfAFilmStudio
+            {
+                TotalMovies = Movies.Count,
+                TotalRevenue = Movies.Sum(m => m.Revenue),
+                TotalExpenses = Movies.Sum(m => m.Budget)
+            };
+        }
+        public void SerializeReport()
+        {
+            FinancialReportOfAFilmStudio report = GenerateReport();
+
+            string json = JsonSerializer.Serialize(report, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
+            File.WriteAllText("FinancialReport.json", json);
+        }
+        public FinancialReportOfAFilmStudio DeserializeReport()
+        {
+            string json = File.ReadAllText("C:\\Users\\user\\OneDrive\\Desktop\\dg\\FinancialReport.json");
+
+            return JsonSerializer.Deserialize<FinancialReportOfAFilmStudio>(json)!;
         }
 
         // mas chatgpt-m mitxra ideebi metodebis(yvelasi ara) :)
