@@ -16,7 +16,7 @@ using static financemanager_proekti_gio.FinanceManagerOfAFilmStudio.FinanceManag
 
 AnsiConsole.MarkupLine("Congratulations! We Saw That You Had [#FFD700]Experience[/] In Running A Part Of Big Companies.");
 AnsiConsole.MarkupLine("Your Role Was Being A [#FFD700]Finance Manager[/]. We Have A Couple Of [#FFD700]Offers[/] For You");
-// mas chatgpt-m maswavla rogor gavaketo es spectre console-ti ferebi, dzaan magaria
+// mas chatgpt-m maswavla rogor gavaketo es spectre console-ti ferebi, dzaan 
 
 Console.WriteLine();
 
